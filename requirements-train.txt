@@ -1,0 +1,12 @@
+# Training pipeline (python -m pipeline). The inference stack is pinned in requirements.txt.
+# On a GPU machine (e.g. Colab), install torch/torchvision with CUDA first, then:
+#   pip install -r requirements-train.txt
+timm==1.0.31
+grad-cam==1.5.7
+safetensors==0.8.0
+pillow==11.3.0
+opencv-python-headless==5.0.0.93
+scikit-learn==1.6.1   # StratifiedGroupKFold shuffling changed in later versions; 1.6.1 reproduces the published folds
+matplotlib==3.11.2
+pandas==2.3.3
+tqdm==4.70.1

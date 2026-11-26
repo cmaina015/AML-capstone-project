@@ -1,0 +1,25 @@
+# Inference stack. torch/torchvision/timm/grad-cam/safetensors/numpy/pillow/opencv are pinned to
+# the versions recorded in deployment_artifacts/model_config.json (Colab training run), CPU builds.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.14.1+cpu
+torchvision==0.29.1+cpu
+timm==1.0.31
+grad-cam==1.5.7
+safetensors==0.8.0
+numpy==2.4.6
+pillow==11.3.0
+opencv-python-headless==5.0.0.93
+
+# grad-cam dependencies (pinned for reproducible images)
+scipy==1.18.1
+scikit-learn==1.9.1
+matplotlib==3.11.2
+ttach==0.0.3
+
+# Web server
+fastapi==0.165.0
+starlette==1.10.0
+pydantic==2.14.4
+uvicorn==0.54.0
+python-multipart==0.0.34
+huggingface_hub==2.4.0

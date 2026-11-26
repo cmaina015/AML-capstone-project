@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-11-21T12:49:17+00:00",
+  "intended_use": "Research and education demo. Not a medical device; not for clinical diagnosis.",
+  "model": {
+    "library": "timm",
+    "architecture": "swin_tiny_patch4_window7_224",
+    "num_classes": 2,
+    "weights_file": "swin_tiny_breakhis.safetensors",
+    "weights_format": "safetensors",
+    "weights_sha256": "1021a36057b9d138010bc0a1183dc8068b887628078aca85fdb961f9b7e20a75",
+    "load_recipe": "timm.create_model(architecture, pretrained=False, num_classes=2); model.load_state_dict(safetensors.torch.load_file(weights_file), strict=True); model.eval()"
+  },
+  "classes": {
+    "0": "benign",
+    "1": "malignant"
+  },
+  "positive_class": "malignant",
+  "decision": {
+    "score": "p_malignant = softmax(logits.double(), dim=1)[:, 1]",
+    "rule": "predict malignant if p_malignant >= threshold, else benign",
+    "threshold": 0.33991767471522394,
+    "reference_threshold": 0.5,
+    "selection": {
+      "data": "deployment validation holdout (patient-level, ~15% of patients)",
+      "criterion": "highest threshold with validation malignant recall >= 0.95",
+      "threshold": 0.33991767471522394,
+      "target_malignant_recall": 0.95,
+      "val_malignant_recall": 0.9537815126050421,
+      "val_benign_recall": 0.8557692307692307,
+      "val_n_malignant": 238,
+      "val_n_benign": 104,
+      "n_val_patients": 11,
+      "n_val_images": 342,
+      "cv_fold_thresholds": [
+        0.13811192927317714,
+        0.85648414687542,
+        0.4002930878168445,
+        0.06935301609403814,
+        0.9841130909357324
+      ]
+    }
+  },
+  "preprocessing": {
+    "decode": "PIL.Image.open(file).convert('RGB')  (RGBA/LA/P/L/CMYK -> RGB; alpha is dropped, not composited)",
+    "resize": {
+      "method": "squash",
+      "op": "torchvision.transforms.Resize(size=(H, W))",
+      "size_hw": [
+        224,
+        224
+      ],
+      "interpolation": "bilinear",
+      "antialias": true,
+      "preserves_aspect_ratio": false
+    },
+    "center_crop": null,
+    "to_tensor": "torchvision.transforms.ToTensor(): HWC uint8 [0,255] -> CHW float32 [0,1]",
+    "normalize": {
+      "mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "std": [
+        0.229,
+        0.224,
+        0.225
+      ],
+      "source": "ImageNet (timm IMAGENET_DEFAULT_MEAN / IMAGENET_DEFAULT_STD)",
+      "note": "Dataset statistics in dataset_stats.json are for display only and are NOT used here."
+    },
+    "channel_order": "RGB",
+    "tensor_layout": "NCHW",
+    "dtype": "float32"
+  },
+  "training_input": {
+    "image_sizes_seen": [
+      {
+        "width": 224,
+        "height": 224,
+        "count": 2081
+      }
+    ],
+    "note": "Uploads with a different size or aspect ratio are squashed to 224x224, which may distort tissue geometry compared with the training images."
+  },
+  "training": {
+    "pretrained_weights": "timm default for swin_tiny_patch4_window7_224 (ImageNet)",
+    "optimizer": "AdamW",
+    "learning_rate": 0.0001,
+    "weight_decay": 0.0001,
+    "scheduler": "CosineAnnealingLR(T_max=10)",
+    "loss": "CrossEntropyLoss",
+    "batch_size": 32,
+    "max_epochs": 10,
+    "mixed_precision": "fp16 autocast (train only)",
+    "early_stopping": {
+      "monitor": "val_loss",
+      "patience": 3,
+      "min_delta": 0.0001,
+      "restore": "min val_loss weights"
+    },
+    "augmentation": [
+      "RandomHorizontalFlip(p=0.5)",
+      "RandomVerticalFlip(p=0.5)",
+      "RandomRotation(20)",
+      "ColorJitter(brightness=0.1, contrast=0.1, saturation=0.1)"
+    ],
+    "seed": 42,
+    "best_epoch": 4,
+    "epochs_run": 7,
+    "n_train_patients": 70,
+    "n_train_images": 1739
+  },
+  "explainability": {
+    "method": "Grad-CAM",
+    "library": "grad-cam==1.5.7 (import pytorch_grad_cam)",
+    "target_layer": "layers[-1].blocks[-1]",
+    "observed_shapes": {
+      "block.norm2 output": [
+        1,
+        49,
+        768
+      ],
+      "block output": [
+        1,
+        7,
+        7,
+        768
+      ],
+      "model.norm output": [
+        1,
+        7,
+        7,
+        768
+      ]
+    },
+    "reshape_transform": "(B,H,W,C)->permute(0,3,1,2); (B,N,C)->reshape to sqrt(N) grid; (B,C,H,W) unchanged",
+    "cam_grid_hw": [
+      7,
+      7
+    ],
+    "target_class": "predicted class (after threshold)",
+    "note": "Coarse: computed on a 7x7 grid (one cell per ~32x32 px) and upsampled to 224x224. Shows influential regions, not individual cells.",
+    "overlay": "pytorch_grad_cam.utils.image.show_cam_on_image(rgb_224_float01, cam, use_rgb=True, image_weight=0.6)"
+  },
+  "data": {
+    "dataset": "BreakHis",
+    "magnification": "100X",
+    "stain": "H&E",
+    "url": "https://web.inf.ufpr.br/vri/databases/breast-cancer-histopathological-database-breakhis/"
+  },
+  "versions": {
+    "python": "3.13.16",
+    "torch": "2.14.1+cu130",
+    "torchvision": "0.29.1+cu130",
+    "timm": "1.0.31",
+    "grad-cam": "1.5.7",
+    "safetensors": "0.8.0",
+    "numpy": "2.4.6",
+    "pillow": "11.3.0",
+    "opencv": "4.14.0",
+    "opencv_distribution": "opencv-python-headless==5.0.0.93",
+    "scikit-learn": "1.6.1",
+    "cuda": "13.0",
+    "gpu": "Tesla T4"
+  }
+}

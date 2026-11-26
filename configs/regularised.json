@@ -1,0 +1,11 @@
+{
+  "run_name": "regularised",
+  "run_leakage_baseline": false,
+  "hp": {
+    "weight_decay": 0.05,
+    "label_smoothing": 0.1,
+    "drop_path": 0.3,
+    "augment": "strong",
+    "class_weights": true
+  }
+}

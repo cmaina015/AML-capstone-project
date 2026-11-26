@@ -1,0 +1,17 @@
+.venv/
+**/__pycache__/
+*.pyc
+.pytest_cache/
+.git/
+tests/
+scripts/
+*.ipynb
+*.zip
+deployment_artifacts/split_assignments.csv
+deployment_artifacts/requirements-pinned.txt
+web/node_modules/
+web/.next/
+web/out/
+# The browser (ONNX) model is not needed in the server build.
+web/public/model/*.onnx
+web/public/ort/

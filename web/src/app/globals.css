@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+/* `dark:` utilities follow the .dark class on <html> (set by the theme toggle), not only the OS setting. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Semantic colour tokens. Components use these (bg-surface, text-fg, border-line, …) instead of raw
+   grays, so one switch of the variables below re-themes the whole app. */
+@theme inline {
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-subtle: var(--subtle);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-fg-2: var(--fg-2);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-faint: var(--fg-faint);
+
+  /* UI accent: teal, deliberately distinct from the class colours. bg-brand keeps the same teal in
+     both themes; text-brand-fg is lightened in dark mode for contrast. */
+  --color-brand: #0f766e;
+  --color-brand-dark: #115e59;
+  --color-brand-fg: var(--brand-fg);
+  --color-brand-light: var(--brand-light);
+
+  /* Class colours: marks (bars, arcs) use benign/malignant; text uses the -fg variants. */
+  --color-benign: #2e62c4;
+  --color-malignant: #c8325e;
+  --color-benign-fg: var(--benign-fg);
+  --color-malignant-fg: var(--malignant-fg);
+  --color-benign-light: var(--benign-light);
+  --color-malignant-light: var(--malignant-light);
+
+  --color-warn: var(--warn);
+  --color-warn-strong: var(--warn-strong);
+  --color-warn-line: var(--warn-line);
+  --color-warn-fg: var(--warn-fg);
+  --color-danger: var(--danger);
+  --color-danger-line: var(--danger-line);
+  --color-danger-fg: var(--danger-fg);
+}
+
+:root {
+  color-scheme: light;
+  --page: #f9fafb;
+  --surface: #ffffff;
+  --subtle: #f9fafb;
+  --muted: #f3f4f6;
+  --line: #e5e7eb;
+  --line-soft: #f3f4f6;
+  --line-strong: #d1d5db;
+  --fg: #111827;
+  --fg-2: #374151;
+  --fg-muted: #6b7280;
+  --fg-faint: #9ca3af;
+
+  --brand-fg: #0f766e;
+  --brand-light: #e6f4f1;
+  --benign-fg: #2e62c4;
+  --malignant-fg: #c8325e;
+  --benign-light: #e4ebf8;
+  --malignant-light: #f8e4ea;
+
+  --warn: #fefce8;
+  --warn-strong: #fef9c3;
+  --warn-line: #fde047;
+  --warn-fg: #713f12;
+  --danger: #fef2f2;
+  --danger-line: #fecaca;
+  --danger-fg: #991b1b;
+}
+
+.dark {
+  color-scheme: dark;
+  --page: #0d1117;
+  --surface: #161b22;
+  --subtle: #1c232c;
+  --muted: #232b35;
+  --line: #2b333d;
+  --line-soft: #222a33;
+  --line-strong: #3a4450;
+  --fg: #e6edf3;
+  --fg-2: #c4ccd5;
+  --fg-muted: #8d98a5;
+  --fg-faint: #67727f;
+
+  --brand-fg: #2dd4bf;
+  --brand-light: #12302d;
+  --benign-fg: #8cb2ff;
+  --malignant-fg: #ff8fab;
+  --benign-light: #1b2740;
+  --malignant-light: #3a1b27;
+
+  --warn: #2a2310;
+  --warn-strong: #3a3014;
+  --warn-line: #6b5a1a;
+  --warn-fg: #f3d27a;
+  --danger: #2d1517;
+  --danger-line: #6b2a2e;
+  --danger-fg: #fca5a5;
+}
+
+@layer base {
+  body {
+    background-color: var(--page);
+    color: var(--fg);
+  }
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Slides page (components/SlidesPage.tsx) ----------
+   Phones: the slide flows at a readable size. Tablet and up: a fixed 16:9 frame whose base font size
+   is a fixed fraction of the frame width (cqw of .slide-shell), so every slide keeps its layout. */
+.slide-shell {
+  container-type: inline-size;
+}
+.slide-stage {
+  font-size: 15px;
+  line-height: 1.45;
+  min-height: 60vh;
+}
+@media (min-width: 768px) {
+  .slide-stage {
+    aspect-ratio: 16 / 9;
+    min-height: 0;
+    font-size: 1.85cqw;
+  }
+}
+.slide-shell:fullscreen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2vh 2vw;
+  background: var(--page);
+}
+.slide-shell:fullscreen .slide-stage,
+.slide-shell:fullscreen .slide-controls {
+  width: min(96vw, calc(90vh * 16 / 9));
+}
+.slide-shell:fullscreen .slide-stage {
+  aspect-ratio: 16 / 9;
+  min-height: 0;
+  font-size: calc(min(96vw, calc(90vh * 16 / 9)) * 0.0185);
+}
+@keyframes slide-in {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: none; }
+}
+.slide-in {
+  animation: slide-in 220ms ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .slide-in { animation: none; }
+}
+
+/* Beamer-style ball bullets and section numbers on the Slides page */
+.bm-list li {
+  position: relative;
+  padding-left: 1.15em;
+}
+.bm-list li::before {
+  content: "";
+  position: absolute;
+  left: 0.1em;
+  top: 0.42em;
+  width: 0.58em;
+  height: 0.58em;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #9db8ff 0%, #2f5bd3 45%, #0f2b5b 100%);
+}
+.bm-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  font-size: 0.8em;
+  color: #fff;
+  background: radial-gradient(circle at 35% 35%, #9db8ff 0%, #2f5bd3 45%, #0f2b5b 100%);
+}

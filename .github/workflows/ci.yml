@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    name: Python tests (pipeline + API)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - name: Install (CPU torch from requirements.txt)
+        run: |
+          pip install -r requirements-dev.txt
+          pip install pandas==2.3.3 tqdm==4.70.1
+      - name: Fetch the trained weights (so the API tests run, not skip)
+        run: python scripts/fetch_weights.py
+      - name: pytest
+        run: python -m pytest tests -q
+
+  web:
+    name: Web app lint + build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npx tsc --noEmit
+      - run: NEXT_PUBLIC_INFERENCE=server npm run build
+
+  docker:
+    name: Docker image builds
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose build

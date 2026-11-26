@@ -1,0 +1,16 @@
+{
+  "run_name": "baseline",
+  "hp": {
+    "lr": 0.0001,
+    "backbone_lr_mult": 1.0,
+    "weight_decay": 0.0001,
+    "label_smoothing": 0.0,
+    "drop_path": 0.1,
+    "augment": "base",
+    "class_weights": false,
+    "mixup_alpha": 0.0,
+    "epochs": 10,
+    "warmup_epochs": 0,
+    "patience": 3
+  }
+}

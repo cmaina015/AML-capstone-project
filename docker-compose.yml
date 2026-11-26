@@ -1,0 +1,23 @@
+# FastAPI + PyTorch model service with the web app.
+#   python scripts/fetch_weights.py      # once: get the trained weights (or train them: python -m pipeline run)
+#   docker compose up --build            # then open http://localhost:7860 and http://localhost:7860/docs
+services:
+  api:
+    build: .
+    image: breast-histopathology-api:latest
+    ports:
+      - "7860:7860"
+    environment:
+      MAX_UPLOAD_MB: "10"
+      TORCH_NUM_THREADS: "2"
+    # The model files are mounted read-only, so a newly trained model (python -m pipeline run
+    # --out-dir deployment_artifacts) is served after a restart, without rebuilding the image.
+    volumes:
+      - ./deployment_artifacts:/home/user/app/deployment_artifacts:ro
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:7860/health', timeout=4)"]
+      interval: 30s
+      timeout: 5s
+      start_period: 60s
+      retries: 3
+    restart: unless-stopped

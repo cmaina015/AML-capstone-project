@@ -1,0 +1,608 @@
+{
+  "headline": {
+    "description": "Patient-level 5-fold StratifiedGroupKFold (test folds), each fold scored at its own validation-selected threshold. This is the performance estimate shown in the app.",
+    "protocol": {
+      "outer": "StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42)",
+      "groups": "patient_id parsed from filename",
+      "inner_validation": "patient-grouped holdout ~15% of training patients",
+      "threshold_rule": "highest t with validation malignant recall >= 0.95"
+    },
+    "at_selected_threshold": {
+      "accuracy": {
+        "mean": 0.8963742462940646,
+        "std": 0.05844589950921206,
+        "per_fold": [
+          0.9462102689486552,
+          0.8597701149425288,
+          0.9420654911838791,
+          0.8120649651972158,
+          0.921760391198044
+        ]
+      },
+      "balanced_accuracy": {
+        "mean": 0.8575344051263052,
+        "std": 0.08625788074370101,
+        "per_fold": [
+          0.78,
+          0.9019402985074627,
+          0.9276828689580368,
+          0.7491017533774073,
+          0.9289471047886195
+        ]
+      },
+      "malignant_recall": {
+        "mean": 0.9380344907574614,
+        "std": 0.06689721638537809,
+        "per_fold": [
+          1.0,
+          0.8238805970149253,
+          0.9563758389261745,
+          0.9471830985915493,
+          0.9627329192546584
+        ]
+      },
+      "benign_recall": {
+        "mean": 0.7770343194951489,
+        "std": 0.20506608448486882,
+        "per_fold": [
+          0.56,
+          0.98,
+          0.898989898989899,
+          0.5510204081632653,
+          0.8951612903225806
+        ]
+      },
+      "malignant_precision": {
+        "mean": 0.9121006667891587,
+        "std": 0.07961279550348568,
+        "per_fold": [
+          0.9422572178477691,
+          0.9928057553956835,
+          0.9661016949152542,
+          0.8029850746268656,
+          0.856353591160221
+        ]
+      },
+      "malignant_f1": {
+        "mean": 0.9215100721543099,
+        "std": 0.04291093960003104,
+        "per_fold": [
+          0.9702702702702702,
+          0.9004893964110929,
+          0.9612141652613828,
+          0.8691437802907916,
+          0.9064327485380117
+        ]
+      },
+      "weighted_f1": {
+        "mean": 0.894613303447507,
+        "std": 0.06054140247357451,
+        "per_fold": [
+          0.9394241147297383,
+          0.868801239626218,
+          0.9423512922895135,
+          0.8000854607948603,
+          0.922404409797205
+        ]
+      },
+      "roc_auc": {
+        "mean": 0.9615085698604545,
+        "std": 0.03205922706057617,
+        "per_fold": [
+          0.9824512534818942,
+          0.9695223880597014,
+          0.9796962917768287,
+          0.9050253904378653,
+          0.9708475255459827
+        ]
+      }
+    },
+    "at_0.5": {
+      "accuracy": {
+        "mean": 0.9105374295023798,
+        "std": 0.040697351374685505,
+        "per_fold": [
+          0.9559902200488998,
+          0.9011494252873563,
+          0.947103274559194,
+          0.8584686774941995,
+          0.8899755501222494
+        ]
+      },
+      "balanced_accuracy": {
+        "mean": 0.8859188434159588,
+        "std": 0.04302811514187627,
+        "per_fold": [
+          0.8458217270194985,
+          0.9042537313432836,
+          0.9377838790590469,
+          0.836818530228993,
+          0.9049163494289721
+        ]
+      },
+      "malignant_recall": {
+        "mean": 0.9453223225239267,
+        "std": 0.04177630227418678,
+        "per_fold": [
+          0.9916434540389972,
+          0.8985074626865671,
+          0.9563758389261745,
+          0.9049295774647887,
+          0.9751552795031055
+        ]
+      },
+      "benign_recall": {
+        "mean": 0.8265153643079911,
+        "std": 0.09350552913124707,
+        "per_fold": [
+          0.7,
+          0.91,
+          0.9191919191919192,
+          0.7687074829931972,
+          0.8346774193548387
+        ]
+      },
+      "malignant_precision": {
+        "mean": 0.9158647051559392,
+        "std": 0.0780365701932999,
+        "per_fold": [
+          0.9595687331536388,
+          0.9709677419354839,
+          0.9726962457337884,
+          0.8831615120274914,
+          0.7929292929292929
+        ]
+      },
+      "malignant_f1": {
+        "mean": 0.9283415316452238,
+        "std": 0.0436089516806374,
+        "per_fold": [
+          0.9753424657534246,
+          0.9333333333333333,
+          0.9644670050761421,
+          0.8939130434782608,
+          0.8746518105849582
+        ]
+      },
+      "weighted_f1": {
+        "mean": 0.9108845246073795,
+        "std": 0.040031771788415466,
+        "per_fold": [
+          0.9533512774528281,
+          0.9047254150702426,
+          0.9475309526507445,
+          0.8576041807628809,
+          0.891210797100201
+        ]
+      },
+      "roc_auc": {
+        "mean": 0.9615085698604545,
+        "std": 0.03205922706057617,
+        "per_fold": [
+          0.9824512534818942,
+          0.9695223880597014,
+          0.9796962917768287,
+          0.9050253904378653,
+          0.9708475255459827
+        ]
+      }
+    },
+    "fold_thresholds": [
+      0.13811192927317714,
+      0.85648414687542,
+      0.4002930878168445,
+      0.06935301609403814,
+      0.9841130909357324
+    ],
+    "pooled_confusion_matrix": {
+      "labels": [
+        "benign",
+        "malignant"
+      ],
+      "matrix": [
+        [
+          518,
+          126
+        ],
+        [
+          93,
+          1344
+        ]
+      ],
+      "rows": "true",
+      "cols": "predicted"
+    },
+    "folds": [
+      {
+        "fold": 1,
+        "test_patients": [
+          "14-12312",
+          "14-13993",
+          "14-14946",
+          "14-15572",
+          "14-15696",
+          "14-16188",
+          "14-16448",
+          "14-16601",
+          "14-16716",
+          "14-17901",
+          "14-18650",
+          "14-18842",
+          "14-18842D",
+          "14-19854C",
+          "14-20629",
+          "14-22549G"
+        ],
+        "best_epoch": 2,
+        "threshold_selection": {
+          "threshold": 0.13811192927317714,
+          "target_malignant_recall": 0.95,
+          "val_malignant_recall": 0.9548022598870056,
+          "val_benign_recall": 0.8918918918918919,
+          "val_n_malignant": 177,
+          "val_n_benign": 74
+        },
+        "test_at_selected": {
+          "threshold": 0.13811192927317714,
+          "accuracy": 0.9462102689486552,
+          "balanced_accuracy": 0.78,
+          "malignant_recall": 1.0,
+          "benign_recall": 0.56,
+          "malignant_precision": 0.9422572178477691,
+          "malignant_f1": 0.9702702702702702,
+          "weighted_f1": 0.9394241147297383,
+          "roc_auc": 0.9824512534818942,
+          "tn": 28,
+          "fp": 22,
+          "fn": 0,
+          "tp": 359,
+          "n": 409
+        },
+        "test_at_0.5": {
+          "threshold": 0.5,
+          "accuracy": 0.9559902200488998,
+          "balanced_accuracy": 0.8458217270194985,
+          "malignant_recall": 0.9916434540389972,
+          "benign_recall": 0.7,
+          "malignant_precision": 0.9595687331536388,
+          "malignant_f1": 0.9753424657534246,
+          "weighted_f1": 0.9533512774528281,
+          "roc_auc": 0.9824512534818942,
+          "tn": 35,
+          "fp": 15,
+          "fn": 3,
+          "tp": 356,
+          "n": 409
+        }
+      },
+      {
+        "fold": 2,
+        "test_patients": [
+          "14-10147",
+          "14-12465",
+          "14-14015",
+          "14-14926",
+          "14-15570",
+          "14-15704",
+          "14-16184CD",
+          "14-16456",
+          "14-17614",
+          "14-19440",
+          "14-19979C",
+          "14-21998CD",
+          "14-23222AB",
+          "14-29315EF",
+          "14-5694",
+          "14-5695"
+        ],
+        "best_epoch": 2,
+        "threshold_selection": {
+          "threshold": 0.85648414687542,
+          "target_malignant_recall": 0.95,
+          "val_malignant_recall": 0.9530201342281879,
+          "val_benign_recall": 0.7875,
+          "val_n_malignant": 149,
+          "val_n_benign": 80
+        },
+        "test_at_selected": {
+          "threshold": 0.85648414687542,
+          "accuracy": 0.8597701149425288,
+          "balanced_accuracy": 0.9019402985074627,
+          "malignant_recall": 0.8238805970149253,
+          "benign_recall": 0.98,
+          "malignant_precision": 0.9928057553956835,
+          "malignant_f1": 0.9004893964110929,
+          "weighted_f1": 0.868801239626218,
+          "roc_auc": 0.9695223880597014,
+          "tn": 98,
+          "fp": 2,
+          "fn": 59,
+          "tp": 276,
+          "n": 435
+        },
+        "test_at_0.5": {
+          "threshold": 0.5,
+          "accuracy": 0.9011494252873563,
+          "balanced_accuracy": 0.9042537313432836,
+          "malignant_recall": 0.8985074626865671,
+          "benign_recall": 0.91,
+          "malignant_precision": 0.9709677419354839,
+          "malignant_f1": 0.9333333333333333,
+          "weighted_f1": 0.9047254150702426,
+          "roc_auc": 0.9695223880597014,
+          "tn": 91,
+          "fp": 9,
+          "fn": 34,
+          "tp": 301,
+          "n": 435
+        }
+      },
+      {
+        "fold": 3,
+        "test_patients": [
+          "14-11951",
+          "14-12204",
+          "14-13200",
+          "14-13418DE",
+          "14-14134E",
+          "14-15275",
+          "14-15570C",
+          "14-19979",
+          "14-22704",
+          "14-2980",
+          "14-3909",
+          "14-4364",
+          "14-5287",
+          "14-6241",
+          "14-8168",
+          "14-9461",
+          "15-190EF"
+        ],
+        "best_epoch": 6,
+        "threshold_selection": {
+          "threshold": 0.4002930878168445,
+          "target_malignant_recall": 0.95,
+          "val_malignant_recall": 0.9558823529411765,
+          "val_benign_recall": 0.9397590361445783,
+          "val_n_malignant": 136,
+          "val_n_benign": 83
+        },
+        "test_at_selected": {
+          "threshold": 0.4002930878168445,
+          "accuracy": 0.9420654911838791,
+          "balanced_accuracy": 0.9276828689580368,
+          "malignant_recall": 0.9563758389261745,
+          "benign_recall": 0.898989898989899,
+          "malignant_precision": 0.9661016949152542,
+          "malignant_f1": 0.9612141652613828,
+          "weighted_f1": 0.9423512922895135,
+          "roc_auc": 0.9796962917768287,
+          "tn": 89,
+          "fp": 10,
+          "fn": 13,
+          "tp": 285,
+          "n": 397
+        },
+        "test_at_0.5": {
+          "threshold": 0.5,
+          "accuracy": 0.947103274559194,
+          "balanced_accuracy": 0.9377838790590469,
+          "malignant_recall": 0.9563758389261745,
+          "benign_recall": 0.9191919191919192,
+          "malignant_precision": 0.9726962457337884,
+          "malignant_f1": 0.9644670050761421,
+          "weighted_f1": 0.9475309526507445,
+          "roc_auc": 0.9796962917768287,
+          "tn": 91,
+          "fp": 8,
+          "fn": 13,
+          "tp": 285,
+          "n": 397
+        }
+      },
+      {
+        "fold": 4,
+        "test_patients": [
+          "14-10926",
+          "14-11031",
+          "14-12773",
+          "14-13412",
+          "14-13413",
+          "14-14134",
+          "14-15687B",
+          "14-15792",
+          "14-16196",
+          "14-16336",
+          "14-16875",
+          "14-20636",
+          "14-22549CD",
+          "14-23060CD",
+          "14-25197",
+          "14-9133"
+        ],
+        "best_epoch": 3,
+        "threshold_selection": {
+          "threshold": 0.06935301609403814,
+          "target_malignant_recall": 0.95,
+          "val_malignant_recall": 0.9545454545454546,
+          "val_benign_recall": 0.7931034482758621,
+          "val_n_malignant": 110,
+          "val_n_benign": 87
+        },
+        "test_at_selected": {
+          "threshold": 0.06935301609403814,
+          "accuracy": 0.8120649651972158,
+          "balanced_accuracy": 0.7491017533774073,
+          "malignant_recall": 0.9471830985915493,
+          "benign_recall": 0.5510204081632653,
+          "malignant_precision": 0.8029850746268656,
+          "malignant_f1": 0.8691437802907916,
+          "weighted_f1": 0.8000854607948603,
+          "roc_auc": 0.9050253904378653,
+          "tn": 81,
+          "fp": 66,
+          "fn": 15,
+          "tp": 269,
+          "n": 431
+        },
+        "test_at_0.5": {
+          "threshold": 0.5,
+          "accuracy": 0.8584686774941995,
+          "balanced_accuracy": 0.836818530228993,
+          "malignant_recall": 0.9049295774647887,
+          "benign_recall": 0.7687074829931972,
+          "malignant_precision": 0.8831615120274914,
+          "malignant_f1": 0.8939130434782608,
+          "weighted_f1": 0.8576041807628809,
+          "roc_auc": 0.9050253904378653,
+          "tn": 113,
+          "fp": 34,
+          "fn": 27,
+          "tp": 257,
+          "n": 431
+        }
+      },
+      {
+        "fold": 5,
+        "test_patients": [
+          "14-11520",
+          "14-16184",
+          "14-17915",
+          "14-21978AB",
+          "14-21998AB",
+          "14-21998EF",
+          "14-22549AB",
+          "14-23060AB",
+          "14-2523",
+          "14-2773",
+          "14-2985",
+          "14-29960AB",
+          "14-29960CD",
+          "14-3411F",
+          "14-4372",
+          "14-9146"
+        ],
+        "best_epoch": 6,
+        "threshold_selection": {
+          "threshold": 0.9841130909357324,
+          "target_malignant_recall": 0.95,
+          "val_malignant_recall": 0.9516129032258065,
+          "val_benign_recall": 1.0,
+          "val_n_malignant": 186,
+          "val_n_benign": 50
+        },
+        "test_at_selected": {
+          "threshold": 0.9841130909357324,
+          "accuracy": 0.921760391198044,
+          "balanced_accuracy": 0.9289471047886195,
+          "malignant_recall": 0.9627329192546584,
+          "benign_recall": 0.8951612903225806,
+          "malignant_precision": 0.856353591160221,
+          "malignant_f1": 0.9064327485380117,
+          "weighted_f1": 0.922404409797205,
+          "roc_auc": 0.9708475255459827,
+          "tn": 222,
+          "fp": 26,
+          "fn": 6,
+          "tp": 155,
+          "n": 409
+        },
+        "test_at_0.5": {
+          "threshold": 0.5,
+          "accuracy": 0.8899755501222494,
+          "balanced_accuracy": 0.9049163494289721,
+          "malignant_recall": 0.9751552795031055,
+          "benign_recall": 0.8346774193548387,
+          "malignant_precision": 0.7929292929292929,
+          "malignant_f1": 0.8746518105849582,
+          "weighted_f1": 0.891210797100201,
+          "roc_auc": 0.9708475255459827,
+          "tn": 207,
+          "fp": 41,
+          "fn": 4,
+          "tp": 157,
+          "n": 409
+        }
+      }
+    ]
+  },
+  "leakage_prone_baseline": {
+    "label": "leakage-prone baseline",
+    "description": "Original image-level stratified 70/15/15 split (seed 42). Images from the same patient can appear in train and test, so these numbers are optimistic. Not shown as the app headline.",
+    "leakage": {
+      "test_patients": 78,
+      "test_patients_also_in_train": 78,
+      "test_images_from_leaked_patients": 313,
+      "test_images": 313
+    },
+    "threshold_selection": {
+      "threshold": 0.9968086047306814,
+      "target_malignant_recall": 0.95,
+      "val_malignant_recall": 0.9534883720930233,
+      "val_benign_recall": 1.0,
+      "val_n_malignant": 215,
+      "val_n_benign": 97
+    },
+    "test_at_selected": {
+      "threshold": 0.9968086047306814,
+      "accuracy": 0.9265175718849841,
+      "balanced_accuracy": 0.9467592592592593,
+      "malignant_recall": 0.8935185185185185,
+      "benign_recall": 1.0,
+      "malignant_precision": 1.0,
+      "malignant_f1": 0.9437652811735942,
+      "weighted_f1": 0.9283456701045141,
+      "roc_auc": 0.9994749904543719,
+      "tn": 97,
+      "fp": 0,
+      "fn": 23,
+      "tp": 193,
+      "n": 313
+    },
+    "test_at_0.5": {
+      "threshold": 0.5,
+      "accuracy": 0.9840255591054313,
+      "balanced_accuracy": 0.9799064528445971,
+      "malignant_recall": 0.9907407407407407,
+      "benign_recall": 0.9690721649484536,
+      "malignant_precision": 0.9861751152073732,
+      "malignant_f1": 0.9884526558891455,
+      "weighted_f1": 0.984002620780127,
+      "roc_auc": 0.9994749904543719,
+      "tn": 94,
+      "fp": 3,
+      "fn": 2,
+      "tp": 214,
+      "n": 313
+    }
+  },
+  "deployed_model": {
+    "description": "Trained on all patients except a patient-level validation holdout. It has no held-out test set of its own; use the headline CV estimate for expected performance.",
+    "threshold": 0.33991767471522394,
+    "validation_at_threshold": {
+      "threshold": 0.33991767471522394,
+      "accuracy": 0.9239766081871345,
+      "balanced_accuracy": 0.9047753716871364,
+      "malignant_recall": 0.9537815126050421,
+      "benign_recall": 0.8557692307692307,
+      "malignant_precision": 0.9380165289256198,
+      "malignant_f1": 0.9458333333333333,
+      "weighted_f1": 0.9235480449489738,
+      "roc_auc": 0.9753151260504201,
+      "tn": 89,
+      "fp": 15,
+      "fn": 11,
+      "tp": 227,
+      "n": 342
+    },
+    "best_epoch": 4
+  },
+  "limitations": [
+    "Validation data was used for both early stopping and threshold selection, so validation metrics are optimistic and the threshold is fitted to a few patients.",
+    "Only 81 patients from a single institution (BreakHis); no external validation.",
+    "Single magnification (100X), H&E staining; other magnifications, stains or scanners are out of scope.",
+    "Image-level predictions; no slide- or patient-level aggregation.",
+    "Grad-CAM is computed on a coarse 7x7 grid and highlights influential regions, not diagnostic features.",
+    "Research and education demo only; not for clinical use."
+  ]
+}

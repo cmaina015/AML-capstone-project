@@ -1,0 +1,752 @@
+{
+ "intended_use": "Research and education demo. Not a medical device; not for clinical diagnosis.",
+ "model": {
+  "architecture": "swin_tiny_patch4_window7_224",
+  "weights_sha256": "1021a36057b9d138010bc0a1183dc8068b887628078aca85fdb961f9b7e20a75",
+  "classes": {
+   "0": "benign",
+   "1": "malignant"
+  },
+  "positive_class": "malignant",
+  "threshold": 0.33991767471522394,
+  "reference_threshold": 0.5,
+  "decision_rule": "predict malignant if p_malignant >= threshold, else benign",
+  "threshold_selection": {
+   "data": "deployment validation holdout (patient-level, ~15% of patients)",
+   "criterion": "highest threshold with validation malignant recall >= 0.95",
+   "threshold": 0.33991767471522394,
+   "target_malignant_recall": 0.95,
+   "val_malignant_recall": 0.9537815126050421,
+   "val_benign_recall": 0.8557692307692307,
+   "val_n_malignant": 238,
+   "val_n_benign": 104,
+   "n_val_patients": 11,
+   "n_val_images": 342,
+   "cv_fold_thresholds": [
+    0.13811192927317714,
+    0.85648414687542,
+    0.4002930878168445,
+    0.06935301609403814,
+    0.9841130909357324
+   ]
+  },
+  "preprocessing": {
+   "resize": "squash to 224x224 (bilinear, aspect ratio not preserved, no crop)",
+   "normalize": "ImageNet mean [0.485, 0.456, 0.406] / std [0.229, 0.224, 0.225]",
+   "details": {
+    "decode": "PIL.Image.open(file).convert('RGB')  (RGBA/LA/P/L/CMYK -> RGB; alpha is dropped, not composited)",
+    "resize": {
+     "method": "squash",
+     "op": "torchvision.transforms.Resize(size=(H, W))",
+     "size_hw": [
+      224,
+      224
+     ],
+     "interpolation": "bilinear",
+     "antialias": true,
+     "preserves_aspect_ratio": false
+    },
+    "center_crop": null,
+    "to_tensor": "torchvision.transforms.ToTensor(): HWC uint8 [0,255] -> CHW float32 [0,1]",
+    "normalize": {
+     "mean": [
+      0.485,
+      0.456,
+      0.406
+     ],
+     "std": [
+      0.229,
+      0.224,
+      0.225
+     ],
+     "source": "ImageNet (timm IMAGENET_DEFAULT_MEAN / IMAGENET_DEFAULT_STD)",
+     "note": "Dataset statistics in dataset_stats.json are for display only and are NOT used here."
+    },
+    "channel_order": "RGB",
+    "tensor_layout": "NCHW",
+    "dtype": "float32"
+   }
+  },
+  "training": {
+   "pretrained_weights": "timm default for swin_tiny_patch4_window7_224 (ImageNet)",
+   "optimizer": "AdamW",
+   "learning_rate": 0.0001,
+   "weight_decay": 0.0001,
+   "scheduler": "CosineAnnealingLR(T_max=10)",
+   "loss": "CrossEntropyLoss",
+   "batch_size": 32,
+   "max_epochs": 10,
+   "mixed_precision": "fp16 autocast (train only)",
+   "early_stopping": {
+    "monitor": "val_loss",
+    "patience": 3,
+    "min_delta": 0.0001,
+    "restore": "min val_loss weights"
+   },
+   "augmentation": [
+    "RandomHorizontalFlip(p=0.5)",
+    "RandomVerticalFlip(p=0.5)",
+    "RandomRotation(20)",
+    "ColorJitter(brightness=0.1, contrast=0.1, saturation=0.1)"
+   ],
+   "seed": 42,
+   "best_epoch": 4,
+   "epochs_run": 7,
+   "n_train_patients": 70,
+   "n_train_images": 1739
+  },
+  "versions": {
+   "python": "3.13.16",
+   "torch": "2.14.1+cu130",
+   "torchvision": "0.29.1+cu130",
+   "timm": "1.0.31",
+   "grad-cam": "1.5.7",
+   "safetensors": "0.8.0",
+   "numpy": "2.4.6",
+   "pillow": "11.3.0",
+   "opencv": "4.14.0",
+   "opencv_distribution": "opencv-python-headless==5.0.0.93",
+   "scikit-learn": "1.6.1",
+   "cuda": "13.0",
+   "gpu": "Tesla T4"
+  }
+ },
+ "dataset": {
+  "dataset": "BreakHis (Breast Cancer Histopathological Database)",
+  "dataset_url": "https://web.inf.ufpr.br/vri/databases/breast-cancer-histopathological-database-breakhis/",
+  "magnification": "100X",
+  "stain": "H&E",
+  "note": "Descriptive statistics for display only. Model input normalisation uses ImageNet mean/std - see model_config.json -> preprocessing.normalize.",
+  "n_images": 2081,
+  "n_patients": 81,
+  "classes": {
+   "benign": {
+    "images": 644,
+    "patients": 24,
+    "image_fraction": 0.3095
+   },
+   "malignant": {
+    "images": 1437,
+    "patients": 57,
+    "image_fraction": 0.6905
+   }
+  },
+  "subtypes": [
+   {
+    "class": "benign",
+    "code": "A",
+    "name": "adenosis",
+    "images": 113,
+    "patients": 4
+   },
+   {
+    "class": "benign",
+    "code": "F",
+    "name": "fibroadenoma",
+    "images": 260,
+    "patients": 10
+   },
+   {
+    "class": "benign",
+    "code": "PT",
+    "name": "phyllodes tumour",
+    "images": 121,
+    "patients": 3
+   },
+   {
+    "class": "benign",
+    "code": "TA",
+    "name": "tubular adenoma",
+    "images": 150,
+    "patients": 7
+   },
+   {
+    "class": "malignant",
+    "code": "DC",
+    "name": "ductal carcinoma",
+    "images": 903,
+    "patients": 38
+   },
+   {
+    "class": "malignant",
+    "code": "LC",
+    "name": "lobular carcinoma",
+    "images": 170,
+    "patients": 5
+   },
+   {
+    "class": "malignant",
+    "code": "MC",
+    "name": "mucinous carcinoma",
+    "images": 222,
+    "patients": 9
+   },
+   {
+    "class": "malignant",
+    "code": "PC",
+    "name": "papillary carcinoma",
+    "images": 142,
+    "patients": 6
+   }
+  ],
+  "image_sizes": [
+   {
+    "width": 224,
+    "height": 224,
+    "count": 2081
+   }
+  ],
+  "colour_modes": {
+   "RGB": 2081
+  },
+  "rgb_0_1": {
+   "all": {
+    "mean": [
+     0.7951,
+     0.6355,
+     0.7705
+    ],
+    "std": [
+     0.1277,
+     0.1782,
+     0.1168
+    ]
+   },
+   "benign": {
+    "mean": [
+     0.7685,
+     0.6886,
+     0.759
+    ],
+    "std": [
+     0.1336,
+     0.1666,
+     0.1186
+    ]
+   },
+   "malignant": {
+    "mean": [
+     0.807,
+     0.6117,
+     0.7756
+    ],
+    "std": [
+     0.1231,
+     0.1781,
+     0.1156
+    ]
+   }
+  },
+  "integrity": {
+   "unparsed_filenames": 0,
+   "patients_in_both_classes": 0,
+   "patients_spanning_subtypes": {
+    "14-13412": [
+     "DC",
+     "LC"
+    ]
+   },
+   "files_with_other_magnification_in_name": 0,
+   "identical_content_images": 66,
+   "identical_content_groups_across_patients": 0
+  },
+  "splits": {
+   "headline_cv": "5-fold patient-level StratifiedGroupKFold",
+   "deployment_model": {
+    "benign": {
+     "train_patients": 21,
+     "train_images": 540,
+     "val_patients": 3,
+     "val_images": 104
+    },
+    "malignant": {
+     "train_patients": 49,
+     "train_images": 1199,
+     "val_patients": 8,
+     "val_images": 238
+    }
+   }
+  }
+ },
+ "performance": {
+  "headline": {
+   "label": "Patient-level cross-validation",
+   "description": "Patient-level 5-fold StratifiedGroupKFold (test folds), each fold scored at its own validation-selected threshold. This is the performance estimate shown in the app.",
+   "protocol": {
+    "outer": "StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42)",
+    "groups": "patient_id parsed from filename",
+    "inner_validation": "patient-grouped holdout ~15% of training patients",
+    "threshold_rule": "highest t with validation malignant recall >= 0.95"
+   },
+   "n_folds": 5,
+   "at_selected_threshold": {
+    "malignant_recall": {
+     "mean": 0.9380344907574614,
+     "std": 0.06689721638537809
+    },
+    "benign_recall": {
+     "mean": 0.7770343194951489,
+     "std": 0.20506608448486882
+    },
+    "balanced_accuracy": {
+     "mean": 0.8575344051263052,
+     "std": 0.08625788074370101
+    },
+    "accuracy": {
+     "mean": 0.8963742462940646,
+     "std": 0.05844589950921206
+    },
+    "malignant_precision": {
+     "mean": 0.9121006667891587,
+     "std": 0.07961279550348568
+    },
+    "weighted_f1": {
+     "mean": 0.894613303447507,
+     "std": 0.06054140247357451
+    },
+    "roc_auc": {
+     "mean": 0.9615085698604545,
+     "std": 0.03205922706057617
+    }
+   },
+   "at_0.5": {
+    "malignant_recall": {
+     "mean": 0.9453223225239267,
+     "std": 0.04177630227418678
+    },
+    "benign_recall": {
+     "mean": 0.8265153643079911,
+     "std": 0.09350552913124707
+    },
+    "balanced_accuracy": {
+     "mean": 0.8859188434159588,
+     "std": 0.04302811514187627
+    },
+    "accuracy": {
+     "mean": 0.9105374295023798,
+     "std": 0.040697351374685505
+    },
+    "malignant_precision": {
+     "mean": 0.9158647051559392,
+     "std": 0.0780365701932999
+    },
+    "weighted_f1": {
+     "mean": 0.9108845246073795,
+     "std": 0.040031771788415466
+    },
+    "roc_auc": {
+     "mean": 0.9615085698604545,
+     "std": 0.03205922706057617
+    }
+   },
+   "fold_thresholds": [
+    0.13811192927317714,
+    0.85648414687542,
+    0.4002930878168445,
+    0.06935301609403814,
+    0.9841130909357324
+   ],
+   "pooled_confusion_matrix": {
+    "labels": [
+     "benign",
+     "malignant"
+    ],
+    "matrix": [
+     [
+      518,
+      126
+     ],
+     [
+      93,
+      1344
+     ]
+    ],
+    "rows": "true",
+    "cols": "predicted"
+   },
+   "folds": [
+    {
+     "fold": 1,
+     "test_patients": [
+      "14-12312",
+      "14-13993",
+      "14-14946",
+      "14-15572",
+      "14-15696",
+      "14-16188",
+      "14-16448",
+      "14-16601",
+      "14-16716",
+      "14-17901",
+      "14-18650",
+      "14-18842",
+      "14-18842D",
+      "14-19854C",
+      "14-20629",
+      "14-22549G"
+     ],
+     "threshold": 0.13811192927317714,
+     "test_at_selected": {
+      "malignant_recall": 1.0,
+      "benign_recall": 0.56,
+      "balanced_accuracy": 0.78,
+      "accuracy": 0.9462102689486552,
+      "malignant_precision": 0.9422572178477691,
+      "weighted_f1": 0.9394241147297383,
+      "roc_auc": 0.9824512534818942,
+      "threshold": 0.13811192927317714,
+      "tn": 28,
+      "fp": 22,
+      "fn": 0,
+      "tp": 359,
+      "n": 409
+     },
+     "test_at_0.5": {
+      "malignant_recall": 0.9916434540389972,
+      "benign_recall": 0.7,
+      "balanced_accuracy": 0.8458217270194985,
+      "accuracy": 0.9559902200488998,
+      "malignant_precision": 0.9595687331536388,
+      "weighted_f1": 0.9533512774528281,
+      "roc_auc": 0.9824512534818942,
+      "threshold": 0.5,
+      "tn": 35,
+      "fp": 15,
+      "fn": 3,
+      "tp": 356,
+      "n": 409
+     }
+    },
+    {
+     "fold": 2,
+     "test_patients": [
+      "14-10147",
+      "14-12465",
+      "14-14015",
+      "14-14926",
+      "14-15570",
+      "14-15704",
+      "14-16184CD",
+      "14-16456",
+      "14-17614",
+      "14-19440",
+      "14-19979C",
+      "14-21998CD",
+      "14-23222AB",
+      "14-29315EF",
+      "14-5694",
+      "14-5695"
+     ],
+     "threshold": 0.85648414687542,
+     "test_at_selected": {
+      "malignant_recall": 0.8238805970149253,
+      "benign_recall": 0.98,
+      "balanced_accuracy": 0.9019402985074627,
+      "accuracy": 0.8597701149425288,
+      "malignant_precision": 0.9928057553956835,
+      "weighted_f1": 0.868801239626218,
+      "roc_auc": 0.9695223880597014,
+      "threshold": 0.85648414687542,
+      "tn": 98,
+      "fp": 2,
+      "fn": 59,
+      "tp": 276,
+      "n": 435
+     },
+     "test_at_0.5": {
+      "malignant_recall": 0.8985074626865671,
+      "benign_recall": 0.91,
+      "balanced_accuracy": 0.9042537313432836,
+      "accuracy": 0.9011494252873563,
+      "malignant_precision": 0.9709677419354839,
+      "weighted_f1": 0.9047254150702426,
+      "roc_auc": 0.9695223880597014,
+      "threshold": 0.5,
+      "tn": 91,
+      "fp": 9,
+      "fn": 34,
+      "tp": 301,
+      "n": 435
+     }
+    },
+    {
+     "fold": 3,
+     "test_patients": [
+      "14-11951",
+      "14-12204",
+      "14-13200",
+      "14-13418DE",
+      "14-14134E",
+      "14-15275",
+      "14-15570C",
+      "14-19979",
+      "14-22704",
+      "14-2980",
+      "14-3909",
+      "14-4364",
+      "14-5287",
+      "14-6241",
+      "14-8168",
+      "14-9461",
+      "15-190EF"
+     ],
+     "threshold": 0.4002930878168445,
+     "test_at_selected": {
+      "malignant_recall": 0.9563758389261745,
+      "benign_recall": 0.898989898989899,
+      "balanced_accuracy": 0.9276828689580368,
+      "accuracy": 0.9420654911838791,
+      "malignant_precision": 0.9661016949152542,
+      "weighted_f1": 0.9423512922895135,
+      "roc_auc": 0.9796962917768287,
+      "threshold": 0.4002930878168445,
+      "tn": 89,
+      "fp": 10,
+      "fn": 13,
+      "tp": 285,
+      "n": 397
+     },
+     "test_at_0.5": {
+      "malignant_recall": 0.9563758389261745,
+      "benign_recall": 0.9191919191919192,
+      "balanced_accuracy": 0.9377838790590469,
+      "accuracy": 0.947103274559194,
+      "malignant_precision": 0.9726962457337884,
+      "weighted_f1": 0.9475309526507445,
+      "roc_auc": 0.9796962917768287,
+      "threshold": 0.5,
+      "tn": 91,
+      "fp": 8,
+      "fn": 13,
+      "tp": 285,
+      "n": 397
+     }
+    },
+    {
+     "fold": 4,
+     "test_patients": [
+      "14-10926",
+      "14-11031",
+      "14-12773",
+      "14-13412",
+      "14-13413",
+      "14-14134",
+      "14-15687B",
+      "14-15792",
+      "14-16196",
+      "14-16336",
+      "14-16875",
+      "14-20636",
+      "14-22549CD",
+      "14-23060CD",
+      "14-25197",
+      "14-9133"
+     ],
+     "threshold": 0.06935301609403814,
+     "test_at_selected": {
+      "malignant_recall": 0.9471830985915493,
+      "benign_recall": 0.5510204081632653,
+      "balanced_accuracy": 0.7491017533774073,
+      "accuracy": 0.8120649651972158,
+      "malignant_precision": 0.8029850746268656,
+      "weighted_f1": 0.8000854607948603,
+      "roc_auc": 0.9050253904378653,
+      "threshold": 0.06935301609403814,
+      "tn": 81,
+      "fp": 66,
+      "fn": 15,
+      "tp": 269,
+      "n": 431
+     },
+     "test_at_0.5": {
+      "malignant_recall": 0.9049295774647887,
+      "benign_recall": 0.7687074829931972,
+      "balanced_accuracy": 0.836818530228993,
+      "accuracy": 0.8584686774941995,
+      "malignant_precision": 0.8831615120274914,
+      "weighted_f1": 0.8576041807628809,
+      "roc_auc": 0.9050253904378653,
+      "threshold": 0.5,
+      "tn": 113,
+      "fp": 34,
+      "fn": 27,
+      "tp": 257,
+      "n": 431
+     }
+    },
+    {
+     "fold": 5,
+     "test_patients": [
+      "14-11520",
+      "14-16184",
+      "14-17915",
+      "14-21978AB",
+      "14-21998AB",
+      "14-21998EF",
+      "14-22549AB",
+      "14-23060AB",
+      "14-2523",
+      "14-2773",
+      "14-2985",
+      "14-29960AB",
+      "14-29960CD",
+      "14-3411F",
+      "14-4372",
+      "14-9146"
+     ],
+     "threshold": 0.9841130909357324,
+     "test_at_selected": {
+      "malignant_recall": 0.9627329192546584,
+      "benign_recall": 0.8951612903225806,
+      "balanced_accuracy": 0.9289471047886195,
+      "accuracy": 0.921760391198044,
+      "malignant_precision": 0.856353591160221,
+      "weighted_f1": 0.922404409797205,
+      "roc_auc": 0.9708475255459827,
+      "threshold": 0.9841130909357324,
+      "tn": 222,
+      "fp": 26,
+      "fn": 6,
+      "tp": 155,
+      "n": 409
+     },
+     "test_at_0.5": {
+      "malignant_recall": 0.9751552795031055,
+      "benign_recall": 0.8346774193548387,
+      "balanced_accuracy": 0.9049163494289721,
+      "accuracy": 0.8899755501222494,
+      "malignant_precision": 0.7929292929292929,
+      "weighted_f1": 0.891210797100201,
+      "roc_auc": 0.9708475255459827,
+      "threshold": 0.5,
+      "tn": 207,
+      "fp": 41,
+      "fn": 4,
+      "tp": 157,
+      "n": 409
+     }
+    }
+   ]
+  },
+  "leakage_prone_baseline": {
+   "label": "leakage-prone baseline",
+   "description": "Original image-level stratified 70/15/15 split (seed 42). Images from the same patient can appear in train and test, so these numbers are optimistic. Not shown as the app headline.",
+   "leakage": {
+    "test_patients": 78,
+    "test_patients_also_in_train": 78,
+    "test_images_from_leaked_patients": 313,
+    "test_images": 313
+   },
+   "test_at_selected": {
+    "malignant_recall": 0.8935185185185185,
+    "benign_recall": 1.0,
+    "balanced_accuracy": 0.9467592592592593,
+    "accuracy": 0.9265175718849841,
+    "malignant_precision": 1.0,
+    "weighted_f1": 0.9283456701045141,
+    "roc_auc": 0.9994749904543719
+   }
+  },
+  "deployed_model": {
+   "description": "Trained on all patients except a patient-level validation holdout. It has no held-out test set of its own; use the headline CV estimate for expected performance.",
+   "threshold": 0.33991767471522394,
+   "validation_at_threshold": {
+    "threshold": 0.33991767471522394,
+    "accuracy": 0.9239766081871345,
+    "balanced_accuracy": 0.9047753716871364,
+    "malignant_recall": 0.9537815126050421,
+    "benign_recall": 0.8557692307692307,
+    "malignant_precision": 0.9380165289256198,
+    "malignant_f1": 0.9458333333333333,
+    "weighted_f1": 0.9235480449489738,
+    "roc_auc": 0.9753151260504201,
+    "tn": 89,
+    "fp": 15,
+    "fn": 11,
+    "tp": 227,
+    "n": 342
+   },
+   "best_epoch": 4
+  }
+ },
+ "explainability": {
+  "method": "Grad-CAM",
+  "library": "grad-cam==1.5.7 (import pytorch_grad_cam)",
+  "target_layer": "layers[-1].blocks[-1]",
+  "observed_shapes": {
+   "block.norm2 output": [
+    1,
+    49,
+    768
+   ],
+   "block output": [
+    1,
+    7,
+    7,
+    768
+   ],
+   "model.norm output": [
+    1,
+    7,
+    7,
+    768
+   ]
+  },
+  "reshape_transform": "(B,H,W,C)->permute(0,3,1,2); (B,N,C)->reshape to sqrt(N) grid; (B,C,H,W) unchanged",
+  "cam_grid_hw": [
+   7,
+   7
+  ],
+  "target_class": "predicted class (after threshold)",
+  "note": "Coarse: computed on a 7x7 grid (one cell per ~32x32 px) and upsampled to 224x224. Shows influential regions, not individual cells.",
+  "overlay": "pytorch_grad_cam.utils.image.show_cam_on_image(rgb_224_float01, cam, use_rgb=True, image_weight=0.6)"
+ },
+ "limitations": [
+  "Validation data was used for both early stopping and threshold selection, so validation metrics are optimistic and the threshold is fitted to a few patients.",
+  "Only 81 patients from a single institution (BreakHis); no external validation.",
+  "Single magnification (100X), H&E staining; other magnifications, stains or scanners are out of scope.",
+  "Image-level predictions; no slide- or patient-level aggregation.",
+  "Grad-CAM is computed on a coarse 7x7 grid and highlights influential regions, not diagnostic features.",
+  "Research and education demo only; not for clinical use.",
+  "The decision threshold (0.34) was chosen on a validation set with only 3 benign patients. Thresholds chosen the same way in the 5 cross-validation folds ranged from 0.07 to 0.98, so the exact cut-off is uncertain.",
+  "In cross-validation, a fixed 0.5 threshold did at least as well on average as the validation-selected thresholds (balanced accuracy 0.886 vs 0.858).",
+  "Grad-CAM sometimes highlights structures that are not diagnostic, such as adipose (fat) tissue. A highlighted region is where the model looked, not necessarily where a lesion is.",
+  "The model was trained on 224x224 patches. Larger or non-square images (for example the original 700x460 BreakHis images) are squashed to 224x224, which changes tissue geometry."
+ ],
+ "figures": [
+  "class_distribution.png",
+  "cv_confusion_matrix.png",
+  "cv_roc_curve.png",
+  "training_history.png"
+ ],
+ "limits": {
+  "max_upload_mb": 10.0,
+  "formats": [
+   "PNG",
+   "JPEG",
+   "TIFF",
+   "BMP"
+  ]
+ },
+ "browser_model": {
+  "url": "/model/swin_tiny_breakhis.onnx",
+  "sha256": "efe78139db1a9605e51c557784bfd8f7c293e5ce4479cbfc12878bab1eaf5714",
+  "bytes": 112808027,
+  "parity": {
+   "logit": 3.427267074584961e-07,
+   "prob": 1.0248187443107071e-07,
+   "cam_raw": 3.835884854197502e-08,
+   "cam_224": 1.3113021850585938e-05
+  }
+ },
+ "decision": {
+  "near_threshold_margin": 0.05,
+  "aspect_tolerance": 0.02,
+  "max_pixels": 40000000,
+  "overlay_image_weight": 0.6,
+  "size_hw": [
+   224,
+   224
+  ]
+ }
+}

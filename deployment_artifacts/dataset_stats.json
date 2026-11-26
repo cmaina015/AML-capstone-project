@@ -1,0 +1,157 @@
+{
+  "dataset": "BreakHis (Breast Cancer Histopathological Database)",
+  "dataset_url": "https://web.inf.ufpr.br/vri/databases/breast-cancer-histopathological-database-breakhis/",
+  "magnification": "100X",
+  "stain": "H&E",
+  "note": "Descriptive statistics for display only. Model input normalisation uses ImageNet mean/std - see model_config.json -> preprocessing.normalize.",
+  "n_images": 2081,
+  "n_patients": 81,
+  "classes": {
+    "benign": {
+      "images": 644,
+      "patients": 24,
+      "image_fraction": 0.3095
+    },
+    "malignant": {
+      "images": 1437,
+      "patients": 57,
+      "image_fraction": 0.6905
+    }
+  },
+  "subtypes": [
+    {
+      "class": "benign",
+      "code": "A",
+      "name": "adenosis",
+      "images": 113,
+      "patients": 4
+    },
+    {
+      "class": "benign",
+      "code": "F",
+      "name": "fibroadenoma",
+      "images": 260,
+      "patients": 10
+    },
+    {
+      "class": "benign",
+      "code": "PT",
+      "name": "phyllodes tumour",
+      "images": 121,
+      "patients": 3
+    },
+    {
+      "class": "benign",
+      "code": "TA",
+      "name": "tubular adenoma",
+      "images": 150,
+      "patients": 7
+    },
+    {
+      "class": "malignant",
+      "code": "DC",
+      "name": "ductal carcinoma",
+      "images": 903,
+      "patients": 38
+    },
+    {
+      "class": "malignant",
+      "code": "LC",
+      "name": "lobular carcinoma",
+      "images": 170,
+      "patients": 5
+    },
+    {
+      "class": "malignant",
+      "code": "MC",
+      "name": "mucinous carcinoma",
+      "images": 222,
+      "patients": 9
+    },
+    {
+      "class": "malignant",
+      "code": "PC",
+      "name": "papillary carcinoma",
+      "images": 142,
+      "patients": 6
+    }
+  ],
+  "image_sizes": [
+    {
+      "width": 224,
+      "height": 224,
+      "count": 2081
+    }
+  ],
+  "colour_modes": {
+    "RGB": 2081
+  },
+  "rgb_0_1": {
+    "all": {
+      "mean": [
+        0.7951,
+        0.6355,
+        0.7705
+      ],
+      "std": [
+        0.1277,
+        0.1782,
+        0.1168
+      ]
+    },
+    "benign": {
+      "mean": [
+        0.7685,
+        0.6886,
+        0.759
+      ],
+      "std": [
+        0.1336,
+        0.1666,
+        0.1186
+      ]
+    },
+    "malignant": {
+      "mean": [
+        0.807,
+        0.6117,
+        0.7756
+      ],
+      "std": [
+        0.1231,
+        0.1781,
+        0.1156
+      ]
+    }
+  },
+  "integrity": {
+    "unparsed_filenames": 0,
+    "patients_in_both_classes": 0,
+    "patients_spanning_subtypes": {
+      "14-13412": [
+        "DC",
+        "LC"
+      ]
+    },
+    "files_with_other_magnification_in_name": 0,
+    "identical_content_images": 66,
+    "identical_content_groups_across_patients": 0
+  },
+  "splits": {
+    "headline_cv": "5-fold patient-level StratifiedGroupKFold",
+    "deployment_model": {
+      "benign": {
+        "train_patients": 21,
+        "train_images": 540,
+        "val_patients": 3,
+        "val_images": 104
+      },
+      "malignant": {
+        "train_patients": 49,
+        "train_images": 1199,
+        "val_patients": 8,
+        "val_images": 238
+      }
+    }
+  }
+}

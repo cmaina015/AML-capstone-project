@@ -1,0 +1,24 @@
+{
+  "file": "swin_tiny_breakhis.onnx",
+  "sha256": "efe78139db1a9605e51c557784bfd8f7c293e5ce4479cbfc12878bab1eaf5714",
+  "bytes": 112808027,
+  "source_weights_sha256": "1021a36057b9d138010bc0a1183dc8068b887628078aca85fdb961f9b7e20a75",
+  "opset": 17,
+  "outputs": {
+    "logits": [
+      1,
+      2
+    ],
+    "cams": [
+      2,
+      7,
+      7
+    ]
+  },
+  "parity": {
+    "logit": 3.427267074584961e-07,
+    "prob": 1.0248187443107071e-07,
+    "cam_raw": 3.835884854197502e-08,
+    "cam_224": 1.3113021850585938e-05
+  }
+}
